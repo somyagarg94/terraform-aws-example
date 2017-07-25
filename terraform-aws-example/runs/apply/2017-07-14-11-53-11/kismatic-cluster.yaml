@@ -1,0 +1,74 @@
+cluster:
+  name: kubernetes
+  admin_password: muvqexazjelitceh3      # This password is used to login to the Kubernetes Dashboard and can also be used for administration without a security certificate.
+  disable_package_installation: false    # When true, installation will not occur if any node is missing the correct deb/rpm packages. When false, the installer will attempt to install missing packages for you.
+  package_repository_urls: ""            # Comma-separated list of URLs of the repositories that should be used during installation. These repositories must contain the kismatic packages and all their transitive dependencies.
+  disconnected_installation: false       # Set to true if you have already installed the required packages on the nodes or provided a local URL in package_repository_urls containing those packages.
+  disable_registry_seeding: false        # Set to true if you have seeded your registry with the required images for the installation.
+  networking:
+    type: overlay                        # overlay or routed. Routed pods can be addressed from outside the Kubernetes cluster; Overlay pods can only address each other.
+    pod_cidr_block: 172.16.0.0/16        # Kubernetes will assign pods IPs in this range. Do not use a range that is already in use on your local network!
+    service_cidr_block: 172.20.0.0/16    # Kubernetes will assign services IPs in this range. Do not use a range that is already in use by your local network or pod network!
+    update_hosts_files: false            # When true, the installer will add entries for all nodes to other nodes' hosts files. Use when you don't have access to DNS.
+    http_proxy: ""                       # Set the proxy server to use for HTTP connections.
+    https_proxy: ""                      # Set the proxy server to use for HTTPs connections
+    no_proxy: ""                         # List of host names and/or IPs that shouldn't go through any proxy. If set to a asterisk '*' only, it matches all hosts.
+  certificates:
+    expiry: 17520h                       # Self-signed certificate expiration period in hours; default is 2 years.
+  ssh:
+    user: ubuntu
+    ssh_key: /Users/sgarg/Documents/cs_k8s_architecture/k8s-reference-architecture/ssh/cs_ref_arch # Absolute path to the ssh private key we should use to manage nodes.
+    ssh_port: 22
+  kube_apiserver:
+    option_overrides: {}
+docker:
+  storage:
+    direct_lvm:                          # Configure devicemapper in direct-lvm mode (RHEL/CentOS only).
+      enabled: false
+      block_device: ""                   # Path to the block device that will be used for direct-lvm mode. This device will be wiped and used exclusively by docker.
+      enable_deferred_deletion: false    # Set to true if you want to enable deferred deletion when using direct-lvm mode.
+docker_registry:                         # Here you will provide the details of your Docker registry or setup an internal one to run in the cluster. This is optional and the cluster will always have access to the Docker Hub.
+  setup_internal: false                  # When true, a Docker Registry will be installed on top of your cluster and used to host Docker images needed for its installation.
+  address: ""                            # IP or hostname for your Docker registry. An internal registry will NOT be setup when this field is provided. Must be accessible from all the nodes in the cluster.
+  port: 8443                             # Port for your Docker registry.
+  CA: ""                                 # Absolute path to the CA that was used when starting your Docker registry. The docker daemons on all nodes in the cluster will be configured with this CA.
+add_ons:
+  heapster:
+    disable: false
+    options:
+      heapster_replicas: 2
+      influxdb_pvc_name: ""              # Provide the name of the persistent volume claim that you will create after installation. If not specified, the data will be stored in ephemeral storage.
+  package_manager:
+    disable: false
+    provider: helm                       # Options: 'helm'
+etcd:                                    # Here you will identify all of the nodes that should play the etcd role on your cluster.
+  expected_count: 1
+  nodes:
+  - host: ip-172-31-45-41                # The (short) hostname of a node, e.g. etcd01.
+    ip: 13.59.22.92                      # The ip address the installer should use to manage this node, e.g. 8.8.8.8.
+    internalip: 172.31.45.41             # If the node has an IP for internal traffic, enter it here; otherwise leave blank.
+master:                                  # Here you will identify all of the nodes that should play the master role.
+  expected_count: 1
+  load_balanced_fqdn: master-lb-267660649.us-east-2.elb.amazonaws.com # If you have set up load balancing for master nodes, enter the FQDN name here. Otherwise, use the IP address of a single master node.
+  load_balanced_short_name: master-lb-267660649.us-east-2.elb.amazonaws.com # If you have set up load balancing for master nodes, enter the short name here. Otherwise, use the IP address of a single master node.
+  nodes:
+  - host: ip-172-31-8-181
+    ip: 13.58.56.5
+    internalip: 172.31.8.181
+worker:                                  # Here you will identify all of the nodes that will be workers.
+  expected_count: 1
+  nodes:
+  - host: ip-172-31-33-163
+    ip: 13.59.97.229
+    internalip: 172.31.33.163
+ingress:
+  expected_count: 1
+  nodes:
+  - host: ip-172-31-46-158
+    ip: 13.58.60.220
+    internalip: 172.31.46.158
+storage:
+  expected_count: 0
+  nodes: []
+nfs:                                     # A set of NFS volumes for use by on-cluster persistent workloads, managed by Kismatic.
+  nfs_volume: []

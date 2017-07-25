@@ -1,0 +1,62 @@
+kubernetes_cluster_name: kubernetes
+kubernetes_admin_password: muvqexazjelitceh3
+tls_directory: /Users/sgarg/Documents/cs_k8s_architecture/k8s-reference-architecture
+calico_network_type: overlay
+kubernetes_services_cidr: 172.20.0.0/16
+kubernetes_pods_cidr: 172.16.0.0/16
+kubernetes_dns_service_ip: 172.20.0.2
+modify_hosts_file: false
+allow_package_installation: true
+package_repository_urls: ""
+disconnected_installation: false
+seed_registry: true
+kuberang_path: kuberang/linux/amd64/kuberang
+kubernetes_load_balanced_fqdn: master-lb-267660649.us-east-2.elb.amazonaws.com
+kubernetes_api_server_option_overrides: {}
+configure_docker_with_private_registry: false
+deploy_internal_docker_registry: false
+docker_certificates_ca_path: ""
+docker_registry_address: ""
+docker_registry_port: ""
+force_etcd_restart: false
+force_apiserver_restart: false
+force_controller_manager_restart: false
+force_scheduler_restart: false
+force_proxy_restart: false
+force_kubelet_restart: false
+force_calico_node_restart: false
+force_docker_restart: false
+configure_ingress: true
+kismatic_preflight_checker: inspector/linux/amd64/kismatic-inspector
+kismatic_preflight_checker_local: /Users/sgarg/Documents/cs_k8s_architecture/k8s-reference-architecture/ansible/playbooks/inspector/darwin/amd64/kismatic-inspector
+worker_node: ""
+nfs_volumes: []
+configure_storage: false
+volume_name: ""
+volume_replica_count: 0
+volume_distribution_count: 0
+volume_storage_class: ""
+volume_quota_gb: 0
+volume_quota_bytes: 0
+volume_mount: ""
+volume_allow_ips: ""
+volume_reclaim_policy: ""
+volume_access_modes: []
+kismatic_short_version: 1.4.0
+online_upgrade: false
+diagnostics_dir: ""
+diagnostics_date_time: ""
+docker_direct_lvm_enabled: false
+docker_direct_lvm_block_device_path: ""
+docker_direct_lvm_deferred_deletion_enabled: false
+local_kubeconfig_directory: /Users/sgarg/Documents/cs_k8s_architecture/k8s-reference-architecture/kubeconfig
+helm:
+  enabled: true
+heapster:
+  enabled: true
+  options:
+    heapster_replicas: 2
+    influxdb_pvc_name: ""
+http_proxy: ""
+https_proxy: ""
+no_proxy: ""
